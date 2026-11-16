@@ -16,6 +16,9 @@ class CategoryChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chipColor = AppTheme.cardColor(context);
+    final textColor = Theme.of(context).colorScheme.onSurface;
+
     return SizedBox(
       height: 44,
       child: ListView.separated(
@@ -34,13 +37,13 @@ class CategoryChips extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 18),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: isSelected ? AppTheme.accent : Colors.white,
+                color: isSelected ? AppTheme.accent : chipColor,
                 borderRadius: BorderRadius.circular(22),
               ),
               child: Text(
                 category,
                 style: TextStyle(
-                  color: isSelected ? Colors.white : Colors.black87,
+                  color: isSelected ? Colors.white : textColor,
                   fontWeight: FontWeight.w500,
                 ),
               ),

@@ -117,13 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadNews();
   }
 
-  void _openDetail(Article article) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => DetailScreen(article: article)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,10 +188,13 @@ class _HomeScreenState extends State<HomeScreen> {
           if (index == articles.length) return _buildFooter();
 
           final article = articles[index];
+          final heroTag = 'home-$index';
+          void openDetail() => DetailScreen.open(context, article, heroTag);
+
           if (index == 0) {
-            return FeaturedNewsCard(article: article, onTap: () => _openDetail(article));
+            return FeaturedNewsCard(article: article, heroTag: heroTag, onTap: openDetail);
           }
-          return NewsTile(article: article, onTap: () => _openDetail(article));
+          return NewsTile(article: article, heroTag: heroTag, onTap: openDetail);
         },
       ),
     );

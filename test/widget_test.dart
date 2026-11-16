@@ -14,6 +14,26 @@ void main() {
     expect(await PreferencesService.loadInterests(), ['Sports', 'Science']);
   });
 
+  test('Bookmarks and dark mode are saved and loaded back', () async {
+    SharedPreferences.setMockInitialValues({});
+    final article = Article.fromJson({
+      'source': {'name': 'BBC'},
+      'title': 'Saved story',
+      'url': 'https://example.com/a',
+      'publishedAt': '2026-11-10T08:00:00Z',
+    });
+
+    await PreferencesService.saveBookmarks([article]);
+    final loaded = await PreferencesService.loadBookmarks();
+    expect(loaded.single.title, 'Saved story');
+    expect(loaded.single.sourceName, 'BBC');
+    expect(loaded.single.publishedAt, article.publishedAt);
+
+    expect(await PreferencesService.loadDarkMode(), false);
+    await PreferencesService.saveDarkMode(true);
+    expect(await PreferencesService.loadDarkMode(), true);
+  });
+
   test('Article.fromJson handles missing fields', () {
     final article = Article.fromJson({
       'source': {'name': 'BBC'},

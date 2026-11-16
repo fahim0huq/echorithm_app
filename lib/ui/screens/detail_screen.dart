@@ -3,12 +3,23 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/app_theme.dart';
 import '../../Data/models/article_model.dart';
+import '../../Data/service/bookmark_service.dart';
 import '../widgets/news_image.dart';
 
 class DetailScreen extends StatelessWidget {
   final Article article;
+  final String heroTag;
 
-  const DetailScreen({super.key, required this.article});
+  const DetailScreen({super.key, required this.article, required this.heroTag});
+
+  static void open(BuildContext context, Article article, String heroTag) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DetailScreen(article: article, heroTag: heroTag),
+      ),
+    );
+  }
 
   Future<void> _openArticle(BuildContext context) async {
     final uri = Uri.parse(article.url);
@@ -25,7 +36,6 @@ class DetailScreen extends StatelessWidget {
     final content = article.content?.replaceAll(RegExp(r'\[\+\d+ chars\]'), '');
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -33,9 +43,22 @@ class DetailScreen extends StatelessWidget {
             pinned: true,
             backgroundColor: AppTheme.accent,
             foregroundColor: Colors.white,
+            actions: [
+              ValueListenableBuilder<List<Article>>(
+                valueListenable: BookmarkService.bookmarks,
+                builder: (context, bookmarks, _) {
+                  final isSaved = BookmarkService.isSaved(article);
+                  return IconButton(
+                    icon: Icon(isSaved ? Icons.bookmark : Icons.bookmark_border),
+                    tooltip: isSaved ? 'Remove from saved' : 'Save article',
+                    onPressed: () => BookmarkService.toggle(article),
+                  );
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
-                tag: article.url,
+                tag: heroTag,
                 child: NewsImage(url: article.imageUrl),
               ),
             ),
@@ -46,7 +69,7 @@ class DetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _sourceBadge(),
+                  _sourceBadge(context),
                   const SizedBox(height: 12),
                   Text(
                     article.title,
@@ -87,16 +110,17 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _sourceBadge() {
+  Widget _sourceBadge(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: AppTheme.accent.withValues(alpha: 0.1),
+        color: primary.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         article.sourceName,
-        style: const TextStyle(color: AppTheme.accent, fontWeight: FontWeight.w600),
+        style: TextStyle(color: primary, fontWeight: FontWeight.w600),
       ),
     );
   }

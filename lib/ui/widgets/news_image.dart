@@ -9,7 +9,9 @@ class NewsImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (url == null || url!.isEmpty) return _placeholder(showIcon: true);
+    final placeholderColor = Theme.of(context).colorScheme.surfaceContainerHighest;
+
+    if (url == null || url!.isEmpty) return _placeholder(placeholderColor, showIcon: true);
 
     return Image.network(
       url!,
@@ -17,16 +19,16 @@ class NewsImage extends StatelessWidget {
       height: height,
       fit: BoxFit.cover,
       loadingBuilder: (context, child, progress) =>
-          progress == null ? child : _placeholder(showIcon: false),
-      errorBuilder: (context, error, stack) => _placeholder(showIcon: true),
+          progress == null ? child : _placeholder(placeholderColor, showIcon: false),
+      errorBuilder: (context, error, stack) => _placeholder(placeholderColor, showIcon: true),
     );
   }
 
-  Widget _placeholder({required bool showIcon}) {
+  Widget _placeholder(Color color, {required bool showIcon}) {
     return Container(
       width: width,
       height: height,
-      color: Colors.grey.shade300,
+      color: color,
       child: showIcon
           ? Icon(Icons.image_outlined, color: Colors.grey.shade500, size: 32)
           : null,

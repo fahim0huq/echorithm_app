@@ -11,6 +11,10 @@ Pick the topics you care about, and Echorithm shows top headlines only for those
 - Infinite scroll (pagination, 20 articles per page)
 - Pull to refresh
 - Article page with a collapsing header image and a "Read full article" button
+- Bottom navigation: Home, Search, Saved, Settings
+- Search any topic (with debounce, so it waits until you stop typing)
+- Bookmarks saved on the device, swipe to remove with Undo
+- Dark mode, remembered after restart
 
 ## Tech
 

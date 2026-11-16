@@ -5,9 +5,15 @@ import 'news_image.dart';
 
 class FeaturedNewsCard extends StatelessWidget {
   final Article article;
+  final String heroTag;
   final VoidCallback onTap;
 
-  const FeaturedNewsCard({super.key, required this.article, required this.onTap});
+  const FeaturedNewsCard({
+    super.key,
+    required this.article,
+    required this.heroTag,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class FeaturedNewsCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Hero(tag: article.url, child: NewsImage(url: article.imageUrl)),
+              Hero(tag: heroTag, child: NewsImage(url: article.imageUrl)),
               const DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

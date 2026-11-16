@@ -32,6 +32,19 @@ class Article {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'source': {'name': sourceName},
+      'author': author,
+      'description': description,
+      'content': content,
+      'url': url,
+      'urlToImage': imageUrl,
+      'publishedAt': publishedAt?.toIso8601String(),
+    };
+  }
+
   String get timeAgo {
     if (publishedAt == null) return '';
     final diff = DateTime.now().difference(publishedAt!);

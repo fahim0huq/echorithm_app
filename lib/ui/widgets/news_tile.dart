@@ -6,9 +6,15 @@ import 'news_image.dart';
 
 class NewsTile extends StatelessWidget {
   final Article article;
+  final String heroTag;
   final VoidCallback onTap;
 
-  const NewsTile({super.key, required this.article, required this.onTap});
+  const NewsTile({
+    super.key,
+    required this.article,
+    required this.heroTag,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +23,7 @@ class NewsTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.cardColor(context),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -32,7 +38,7 @@ class NewsTile extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Hero(
-                tag: article.url,
+                tag: heroTag,
                 child: NewsImage(url: article.imageUrl, width: 100, height: 100),
               ),
             ),

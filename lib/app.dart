@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'ui/screens/home_screen.dart';
+import 'Data/service/settings_service.dart';
+import 'ui/screens/bottom_nav_screen.dart';
 import 'ui/utils/app_theme.dart';
 
 class EchorithmApp extends StatelessWidget {
@@ -10,11 +11,18 @@ class EchorithmApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Echorithm',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: HomeScreen(interests: interests),
+    return ValueListenableBuilder<bool>(
+      valueListenable: SettingsService.isDarkMode,
+      builder: (context, isDark, _) {
+        return MaterialApp(
+          title: 'Echorithm',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+          home: BottomNavScreen(interests: interests),
+        );
+      },
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../utils/app_theme.dart';
 import '../../Data/models/article_model.dart';
 import '../../Data/service/bookmark_service.dart';
+import '../../Data/service/personalization_service.dart';
 import '../widgets/news_image.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key, required this.article, required this.heroTag});
 
   static void open(BuildContext context, Article article, String heroTag) {
+    PersonalizationService.recordRead(article);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -64,8 +66,9 @@ class DetailScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            child: SafeArea(
+              top: false,
+              minimum: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

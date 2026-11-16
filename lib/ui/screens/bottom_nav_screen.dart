@@ -7,8 +7,9 @@ import 'settings_screen.dart';
 
 class BottomNavScreen extends StatefulWidget {
   final List<String> interests;
+  final bool isFirstLaunch;
 
-  const BottomNavScreen({super.key, required this.interests});
+  const BottomNavScreen({super.key, required this.interests, required this.isFirstLaunch});
 
   @override
   State<BottomNavScreen> createState() => _BottomNavScreenState();
@@ -18,7 +19,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0;
 
   late final List<Widget> _screens = [
-    HomeScreen(interests: widget.interests),
+    HomeScreen(interests: widget.interests, isFirstLaunch: widget.isFirstLaunch),
     const SearchScreen(),
     const SavedScreen(),
     const SettingsScreen(),

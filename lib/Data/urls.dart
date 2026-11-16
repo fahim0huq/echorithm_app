@@ -8,4 +8,6 @@ class Urls {
   static const String country = 'us';
 
   static const int pageSize = 20;
+
+  static const List<int> forYouShares = [15, 10, 5];
 }

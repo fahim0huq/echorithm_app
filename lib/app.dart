@@ -6,8 +6,9 @@ import 'ui/utils/app_theme.dart';
 
 class EchorithmApp extends StatelessWidget {
   final List<String> interests;
+  final bool isFirstLaunch;
 
-  const EchorithmApp({super.key, required this.interests});
+  const EchorithmApp({super.key, required this.interests, required this.isFirstLaunch});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class EchorithmApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-          home: BottomNavScreen(interests: interests),
+          home: BottomNavScreen(interests: interests, isFirstLaunch: isFirstLaunch),
         );
       },
     );

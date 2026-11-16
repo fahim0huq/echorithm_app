@@ -1,5 +1,6 @@
 import 'package:daily_news/Data/categories.dart';
 import 'package:daily_news/Data/models/article_model.dart';
+import 'package:daily_news/Data/service/personalization_service.dart';
 import 'package:daily_news/Data/service/preferences_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,25 @@ void main() {
     expect(await PreferencesService.loadDarkMode(), false);
     await PreferencesService.saveDarkMode(true);
     expect(await PreferencesService.loadDarkMode(), true);
+  });
+
+  test('For You puts the most-read topics first', () async {
+    SharedPreferences.setMockInitialValues({});
+    await PersonalizationService.load();
+    final interests = ['Business', 'Technology', 'Sports', 'Health'];
+
+    expect(PersonalizationService.topTopics(interests), ['Business', 'Technology', 'Sports']);
+
+    final sportsStory = Article.fromJson({'title': 'Goal', 'url': 'u1'}, category: 'Sports');
+    final healthStory = Article.fromJson({'title': 'Sleep', 'url': 'u2'}, category: 'Health');
+    await PersonalizationService.recordRead(sportsStory);
+    await PersonalizationService.recordRead(sportsStory);
+    await PersonalizationService.recordRead(healthStory);
+
+    expect(PersonalizationService.topTopics(interests), ['Sports', 'Health', 'Business']);
+
+    await PersonalizationService.load();
+    expect(PersonalizationService.readCount('Sports'), 2);
   });
 
   test('Article.fromJson handles missing fields', () {

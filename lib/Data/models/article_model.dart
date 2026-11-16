@@ -7,6 +7,7 @@ class Article {
   final String url;
   final String? imageUrl;
   final DateTime? publishedAt;
+  final String? category;
 
   Article({
     required this.title,
@@ -17,9 +18,10 @@ class Article {
     this.content,
     this.imageUrl,
     this.publishedAt,
+    this.category,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) {
+  factory Article.fromJson(Map<String, dynamic> json, {String? category}) {
     return Article(
       title: json['title'] ?? 'No title',
       sourceName: json['source']?['name'] ?? 'Unknown',
@@ -29,6 +31,7 @@ class Article {
       url: json['url'] ?? '',
       imageUrl: json['urlToImage'],
       publishedAt: DateTime.tryParse(json['publishedAt'] ?? ''),
+      category: category ?? json['category'],
     );
   }
 
@@ -42,6 +45,7 @@ class Article {
       'url': url,
       'urlToImage': imageUrl,
       'publishedAt': publishedAt?.toIso8601String(),
+      'category': category,
     };
   }
 

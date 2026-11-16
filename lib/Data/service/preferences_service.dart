@@ -9,6 +9,24 @@ class PreferencesService {
   static const String _interestsKey = 'interests';
   static const String _bookmarksKey = 'bookmarks';
   static const String _darkModeKey = 'darkMode';
+  static const String _readCountsKey = 'readCounts';
+
+  static Future<bool> hasChosenInterests() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(_interestsKey);
+  }
+
+  static Future<Map<String, int>> loadReadCounts() async {
+    final prefs = await SharedPreferences.getInstance();
+    final text = prefs.getString(_readCountsKey);
+    if (text == null) return {};
+    return Map<String, int>.from(jsonDecode(text));
+  }
+
+  static Future<void> saveReadCounts(Map<String, int> counts) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_readCountsKey, jsonEncode(counts));
+  }
 
   static Future<List<String>> loadInterests() async {
     final prefs = await SharedPreferences.getInstance();
